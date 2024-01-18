@@ -34,7 +34,9 @@ const handleSubmit=async(e)=>{
     });
     const data=await res.json();
     if(data.success === false){
-      return setError(data.message);
+      setError(data.message);
+      setLoading(false);
+      return 
       }
     setLoading(false);
     setError(null);
