@@ -1,11 +1,12 @@
 import { configureStore,combineReducers } from '@reduxjs/toolkit'
 import userReducer from './user/user.slice'
+import themeReducer from './theme/theme.slice'
 import { persistReducer,persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
 
 //we will add redux persist : when we refresh the page the session dosent log out:
-const rootReducer= combineReducers({user:userReducer})
+const rootReducer= combineReducers({user:userReducer,theme:themeReducer})
 // persist configuting the paramaters in the local storage:
 const persistConfig={
     key:'root',
