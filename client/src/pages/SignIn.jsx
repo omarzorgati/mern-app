@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 import { signInFailure, signInStart, signInSuccess } from '../redux/user/user.slice.js';
+import Oauth from '../components/Oauth.jsx';
 
 
 export default function SignIn() {
@@ -71,7 +72,7 @@ const handleSubmit=async(e)=>{
               <Label value='Password'/>
               <TextInput onChange={handleChange} type="password" id='password' placeholder='***********' />
             </div>
-            <Button gradientDuoTone='purpleToBlue'type='submit' disabled={loading} >
+            <Button gradientDuoTone='purpleToBlue'type='submit' outline disabled={loading} >
               {loading ? (
                 <>
                 <Spinner size='sm'/>
@@ -81,6 +82,7 @@ const handleSubmit=async(e)=>{
                
               }
             </Button>
+            <Oauth/>
           </form>
           <div className="flex gap-2 text-sm mt-2">
             <span>You dont have an account ?</span>

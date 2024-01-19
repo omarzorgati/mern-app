@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
 import { useState } from 'react';
 import { Link } from 'react-router-dom'
+import Oauth from '../components/Oauth';
 
 
 export default function SignUp() {
@@ -76,7 +77,7 @@ const handleSubmit=async(e)=>{
               <Label value=' Your password'/>
               <TextInput onChange={handleChange} type="password" id='password' />
             </div>
-            <Button gradientDuoTone='purpleToBlue'type='submit' disabled={loading} >
+            <Button gradientDuoTone='purpleToBlue'type='submit' outline disabled={loading} >
               {loading ? (
                 <>
                 <Spinner size='sm'/>
@@ -86,6 +87,7 @@ const handleSubmit=async(e)=>{
                
               }
             </Button>
+            <Oauth/>
           </form>
           <div className="flex gap-2 text-sm mt-2">
             <span>Have an account ?</span>

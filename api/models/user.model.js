@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema({
         type:String ,
         required: true,
     },
+    profilePicture : {
+        type:String ,
+        default:"https://cdn2.iconfinder.com/data/icons/instagram-outline/19/11-512.png"
+    },
    
 
 // to know when the user is created or updated
