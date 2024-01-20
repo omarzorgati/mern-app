@@ -24,7 +24,7 @@ export default function Dashboard() {
         {/* sidebar */}
         <DashSidebar/>
       </div>
-      <div className="">
+      <div className="flex flex-col md:flex-1 items-center">
         {tab ==='profile' && <DashboardProfile/>}
         {/* profile... */}
 
