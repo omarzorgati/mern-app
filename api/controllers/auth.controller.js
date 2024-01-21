@@ -33,7 +33,7 @@ export const signin = async(req,res,next)=>{
         const validPassword = bcryptjs.compareSync(password,validUser.password);
         if(!validPassword) return next(errorHandler(401,'wrong cridential !'));
         //create a token
-        const token = jwt.sign({id:validUser._id},process.env.JWT_SECRET,{expiresIn:'1d'});
+        const token = jwt.sign({id:validUser._id},process.env.JWT_SECRET);
         //we dont want the password the show up we need to remoove it: distract password from the informations of the user
         const {password:pass,...rest} = validUser._doc;
         // save the token as a coockie
@@ -80,5 +80,13 @@ export const google = async(req,res,next)=>{
     } catch (error) {
         next(error)
         
+    }
+}
+export const signout = async(req,res,next)=>{
+    try {
+        res.clearCookie('access_token');
+        res.status(200).json({message:"User has been signed out"})
+    } catch (error) {
+        next(error)
     }
 }
