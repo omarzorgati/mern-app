@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { app } from '../firebase';
 import { deleteUserFailure, deleteUserStart, deleteUserSucess, signoutUserFailure, signoutUserStart, signoutUserSucess, updateUserFailure, updateUserStart, updateUserSucess } from '../redux/user/user.slice.js';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {HiOutlineExclamationCircle} from 'react-icons/hi';
 
 export default function DashboardProfile() {
@@ -186,7 +186,16 @@ export default function DashboardProfile() {
         <TextInput type='text' id='username' placeholder='username' defaultValue={currentUser.username} onChange={handleChangeUser} />
         <TextInput type='text' id='email' placeholder='email' defaultValue={currentUser.email} onChange={handleChangeUser} />
         <TextInput type='password' id='password' placeholder='password' onChange={handleChangeUser}/>
-        <Button type='submit' gradientDuoTone='purpleToBlue' outline >Update</Button>
+        <Button type='submit' gradientDuoTone='purpleToBlue' outline disabled={loading||imageFileUploading}>
+          {loading ? 'Updating...' : 'Update'}
+          </Button>
+         {
+          currentUser.isAdmin &&(
+            <Link to='/create-post'>
+            <Button type='button' gradientDuoTone='purpleToBlue'  className='w-full' >Create a post</Button>
+            </Link>
+          )
+         }     
      </form>
      <div className="flex justify-between mt-4 mb-2 ">
         <Button onClick={()=>setShowModel(true)} gradientDuoTone='purpleToBlue' outline>Delete Account</Button>
