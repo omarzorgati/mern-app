@@ -6,13 +6,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { app } from '../firebase';
 import { deleteUserFailure, deleteUserStart, deleteUserSucess, signoutUserFailure, signoutUserStart, signoutUserSucess, updateUserFailure, updateUserStart, updateUserSucess } from '../redux/user/user.slice.js';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {HiOutlineExclamationCircle} from 'react-icons/hi';
 
 export default function DashboardProfile() {
     const {currentUser,error,loading} = useSelector((state)=>state.user)
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const [imageFile,setImageFile]=useState(null);
     const [imageFileUrl,setImageFileUrl]=useState(null);
     const [imageFileUploadingProgress,setImageFileUploadingProgress]=useState(null);
