@@ -32,8 +32,8 @@ export const signin = async(req,res,next)=>{
         if(!validUser) return next(errorHandler(404,'user not found'));
         const validPassword = bcryptjs.compareSync(password,validUser.password);
         if(!validPassword) return next(errorHandler(401,'wrong cridential !'));
-        //create a token
-        const token = jwt.sign({id:validUser._id},process.env.JWT_SECRET);
+        //when we create an admin we add is admin with the token
+        const token = jwt.sign({id:validUser._id,isAdmin:validUser.isAdmin},process.env.JWT_SECRET);
         //we dont want the password the show up we need to remoove it: distract password from the informations of the user
         const {password:pass,...rest} = validUser._doc;
         // save the token as a coockie
@@ -52,7 +52,8 @@ export const google = async(req,res,next)=>{
     try {
         const user = await User.findOne({email});
         if(user) {
-            const token = jwt.sign({id:user._id},process.env.JWT_SECRET);
+            //Same for google we add the admin
+            const token = jwt.sign({id:user._id,isAdmin:user.isAdmin},process.env.JWT_SECRET);
             const {password,...rest} = user._doc;
         res
         .cookie('access_token',token,{httpOnly:true})
@@ -62,12 +63,12 @@ export const google = async(req,res,next)=>{
             //we need to generate a random password for creating a user with google
             const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
             const hashedPassword = bcryptjs.hashSync(generatedPassword,10);
-            //create a new user:we must convert the username to lower case and add it numbers to be unique 
-            const newUser = new User({username:name.split(" ").join("").toLowerCase() +
-            Math.random().toString(36).slice(-4),email,password:hashedPassword,
+            const newUser = new User({username:name.toLowerCase().split(' ').join('') +
+            Math.random().toString(9).slice(-4),email,password:hashedPassword,
             profilePicture : GooglePhotoUrl})
             await newUser.save();
-            const token = jwt.sign({id:newUser._id},process.env.JWT_SECRET);
+            //same here
+            const token = jwt.sign({id:newUser._id,isAdmin:newUser.isAdmin},process.env.JWT_SECRET);
             const {password,...rest} = newUser._doc;
             res
             .cookie('access_token',token,{httpOnly:true})
