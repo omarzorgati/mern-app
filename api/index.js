@@ -28,7 +28,7 @@ mongoose.connect(process.env.MONGO).then (()=>{
 //define routes
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
-app.use('/api/post',postRouter)
+app.use('/api/post', postRouter)
 
 
 app.use((err, req, res, next) => {
