@@ -25,7 +25,7 @@ export default function Dashboard() {
         {/* sidebar */}
         <DashSidebar/>
       </div>
-      <div className="flex flex-col md:flex-1 items-center">
+      <div className="md:w-full  ">
         {tab ==='profile' && <DashboardProfile/>}
         {/* profile... */}
         {/* posts... */}
