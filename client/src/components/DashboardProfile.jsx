@@ -215,7 +215,6 @@ export default function DashboardProfile() {
             </div>
           </Modal.Body>         
      </Modal>
-     
     </div>
   )
 }
