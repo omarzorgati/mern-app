@@ -14,8 +14,8 @@ export default function CallToAction() {
       </div>
       <div className="p-7 flex-1">
         {/* right side */}
-        <img src='https://bairesdev.mo.cloudinary.net/blog/2023/08/What-Is-JavaScript-Used-For.jpg' 
-            />
+        <img src='https://bairesdev.mo.cloudinary.net/blog/2023/08/What-Is-JavaScript-Used-For.jpg'/>
+            
       </div>
     </div>
   )
