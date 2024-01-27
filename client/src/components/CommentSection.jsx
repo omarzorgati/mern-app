@@ -1,13 +1,16 @@
 import { Alert, Button, Textarea } from 'flowbite-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import Comments from './Comments'
+import { set } from 'mongoose'
 
 export default function CommentSection({postId}) {
     const {currentUser}=useSelector((state)=>state.user)
     const [comment,setComment]=useState('');
     const [error,setError]=useState(null);
     const [loading,setLoading]=useState(false);
+    const [comments,setComments]=useState([]);
     const handleSubmit=async(e)=>{
         e.preventDefault();
         if(!comment || comment===' '){
@@ -28,7 +31,7 @@ export default function CommentSection({postId}) {
                 },
                 body:JSON.stringify({content:comment,postId,userId:currentUser._id})
             });
-            const data=res.json();
+            const data= await res.json();
             if(!res.ok){
                 setLoading(false);
                 setError(data.error);
@@ -36,6 +39,7 @@ export default function CommentSection({postId}) {
             }
             if(res.ok){
                 setComment('');
+                setComments([data,...comments]);
                 setLoading(false);
                 setError(null);
             }
@@ -45,6 +49,23 @@ export default function CommentSection({postId}) {
             setLoading(false);
         }
     }
+
+    useEffect(()=>{
+        const getComments=async()=>{
+        try {
+            const res = await fetch(`/api/comment/getpostcomments/${postId}`);
+            const data= await res.json();
+            if(res.ok){
+                setComments(data);
+            }
+        } catch (error) {
+            console.log(error.message);
+        } 
+        };
+        getComments();
+    },[postId])
+
+
 
   return (
     <div className='max-w-2xl w-full mx-auto p-3'>
@@ -74,6 +95,23 @@ export default function CommentSection({postId}) {
             </div>
             {error && <Alert color='failure' className='mt-5'>{error}</Alert>}
         </form>
+    )}
+    {comments.length === 0 ? 
+    (
+        <p className='text-sm my-5'>No comments yet</p>
+    )
+    :(  
+        <>
+        <div className="text-sm my-5 flex items-center gap-1">
+            <p>Comments</p>
+            <div className="border border-gray-400 py-1 px-2 rounded-sm">
+                <p>{comments.length}</p>
+            </div>
+        </div>
+        {comments.map((comment)=>(
+            <Comments key={comment._id} comment={comment}/>
+        ))}
+        </>
     )}
     </div>
   )
