@@ -1,3 +1,4 @@
+import Comment from "../models/comment.model.js";
 import User from "../models/user.model.js";
 import { errorHandler } from "../utilities/error.js";
 import bcryptjs from "bcryptjs";
@@ -90,7 +91,8 @@ export const deleteUsers =async(req,res,next)=>{
     }
     try {
      await User.findByIdAndDelete(req.params.userId);
-     res.status(200).json("User has been deleted");
+     await Comment.deleteMany({userId:req.params.userId});
+     res.status(200).json("User and his comments has been deleted");
     } catch (error) {
      next(error);
     }

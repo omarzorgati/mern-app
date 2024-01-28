@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react'
 import { Button, Spinner } from 'flowbite-react';
 import CallToAction from '../components/CallToAction';
 import CommentSection from '../components/CommentSection';
+import CartPost from '../components/CartPost';
 
 export default function PostPage() {
 const {postSlug} = useParams();
 const [loading,setLoading]=useState(true);
 const [error,setError]=useState(null);
 const [post,setPost]=useState(null);
+const [recentPosts,setRecentPosts]=useState(null)
 useEffect(()=>{
     //console.log(postSlug);
     const fetchPost = async ()=>{
@@ -36,6 +38,21 @@ useEffect(()=>{
     fetchPost();
 },[postSlug])
 
+useEffect(()=>{
+    try {
+        const fetchRecentPosts = async ()=>{
+            const res = await fetch(`/api/post/getposts?limit=3`);
+            const data = await res.json();
+            if(res.ok){
+                setRecentPosts(data.posts);
+                //console.log(recentPosts);
+            }
+        }
+        fetchRecentPosts();
+    } catch (error) {
+        console.log(error.message);
+    }
+},[])
 
 
 
@@ -63,6 +80,16 @@ useEffect(()=>{
     </div>
     <div className="">
         <CommentSection postId={post._id} />
+    </div>
+    <div className="flex flex-col justify-center items-center mb-5">
+        <h1 className='text-xl mt-5' >Recent Articles</h1>
+        <div className="flex flex-wrap gap-5 mt-5 justify-center">
+            {
+                recentPosts && recentPosts.map((p)=>
+                    <CartPost key={p._id} post={p} />
+                )
+            }
+        </div>
     </div>
   </main>
  
