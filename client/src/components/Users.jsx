@@ -103,7 +103,7 @@ const [userIdToDelete,setUserIdToDelete]=useState('');
           </Table>
           {
             showMore && (
-              <button onClick={handleShowMore} className='self-center w-full text-sm text-teal-500 py-7'>
+              <button onClick={handleShowMore} className='self-center w-full text-sm text-teal-500 py-7 hover:underline'>
                 Show More
               </button>
             )}

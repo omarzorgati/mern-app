@@ -1,10 +1,11 @@
 import { useSelector,useDispatch } from 'react-redux'
 import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {AiOutlineSearch} from 'react-icons/ai'
 import {FaMoon,FaSun} from 'react-icons/fa'
 import { toggleTheme } from '../redux/theme/theme.slice.js'
 import { signoutUserFailure, signoutUserStart, signoutUserSucess } from '../redux/user/user.slice.js'
+import { useEffect, useState } from 'react'
 
 export default function Header() {
     //in order to know when we are in home page in the menu and active it(get a color when we are at home page)
@@ -12,6 +13,9 @@ export default function Header() {
     const {currentUser} = useSelector((state)=>state.user)
     const {theme} = useSelector((state)=>state.theme)
     const dispatch = useDispatch();
+    const [searchTerm,setSearchTerm]=useState('');
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const handleSignout=async()=>{
         try {
@@ -30,6 +34,23 @@ export default function Header() {
         }
       }
 
+    useEffect(()=>{
+        const urlParams = new URLSearchParams(location.search);
+        const searchTermFromUrl = urlParams.get('searchTerm');
+        if(searchTermFromUrl){
+            setSearchTerm(searchTermFromUrl);
+        }
+    },[location.search])
+    
+    const handleSubmit=async(e)=>{
+        e.preventDefault();
+        const urlParams = new URLSearchParams(location.search);
+        urlParams.set('searchTerm',searchTerm);
+        const searchQuery = urlParams.toString();
+        navigate(`/search?${searchQuery}`);
+
+    }
+
 
   return (
     <Navbar className='border-b-2'>
@@ -38,13 +59,13 @@ export default function Header() {
             Omar's</span>
             Blog
         </Link>
-        <form>
-            <TextInput type='text' placeholder='search...' rightIcon={AiOutlineSearch} 
-            className='hidden lg:inline' />
+        <form onSubmit={handleSubmit} className='flex items-center' >
+            <div className="relative">
+            <TextInput type='text' placeholder='search...'  
+            className='inline' value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} />
+            <button className='absolute right-0 top-0 h-full px-4 rounded-r'><AiOutlineSearch/></button>
+            </div>
         </form>
-        <Button className='w-12 h-10 lg:hidden'color='gray' pill >
-            <AiOutlineSearch/>
-        </Button>
         <div className="flex gap-2 md:order-2">
             <Button onClick={()=>dispatch(toggleTheme())} className='w-12 h-10 hidden sm:inline'color='gray' pill >
                 {theme==='light'?<FaSun/>:<FaMoon/>}
