@@ -7,10 +7,13 @@ import authRouter from './routes/auth.route.js';
 import postRouter from './routes/post.route.js';
 import commentRouter from './routes/comment.route.js';
 import cookieParser from 'cookie-parser';
+import path from 'path';
 
 
 
 
+//deployment:
+const __dirname = path.resolve();
 
 
 
@@ -31,6 +34,12 @@ app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/post', postRouter)
 app.use('/api/comment', commentRouter)
+
+//it must be after the api
+app.use(express.static(path.join(__dirname, '/client/dist')));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+});
 
 
 app.use((err, req, res, next) => {
