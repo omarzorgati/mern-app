@@ -26,7 +26,7 @@ const [postIdToDelete,setpostIdToDelete]=useState('');
 
 
       } catch (error) {
-        
+          console.log(error.message);
       }
     };
     if(currentUser.isAdmin){
@@ -39,7 +39,7 @@ const [postIdToDelete,setpostIdToDelete]=useState('');
       const res = await fetch(`api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`)
       const data = await res.json()
       if(res.ok){
-        setUserPosts((prev)=>[...prev,...data.posts])
+          setUserPosts(prev => [...prev, ...data.posts]);
         if(data.posts.length<9){
           setShowMore(false);
         }
@@ -69,7 +69,7 @@ const [postIdToDelete,setpostIdToDelete]=useState('');
 
   return (
     <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100
-     scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500 '>
+     scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500 min-h-screen '>
       {currentUser.isAdmin && userPosts.length>0 ? (
         <>
           <Table hoverable className='shadow-md '>
